@@ -2,36 +2,23 @@ package it.polito.tdp.provadb;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import it.polito.tdp.provadb.db.DizionarioDAO;
 
 public class Main {
 
 	public void run() {
 		
-		String jdbcURL = "jdbc:mysql://localhost/dizionario?useTimezone=true&serverTimezone=UTC&user=root&password=toro1997";
-			
-		try {
-			
-		Connection conn= DriverManager.getConnection(jdbcURL);
-		Statement statement = conn.createStatement();
-		String sql = "SELECT * FROM parola "+
-				"WHERE nome LIKE 'Z%'";
+		String parola= "gatto";
 		
-		ResultSet rs = statement.executeQuery(sql);
-		
-		while(rs.next()) {
-			int id = rs.getInt("id");
-			String nome = rs.getString("nome");
-			
-			System.out.println(nome);
-		}
-		conn.close();
-		
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
+		DizionarioDAO d = new DizionarioDAO();
+		if (d.esisteParola(parola))
+				System.out.format("La parola %s esiste \n", parola);
+		else  System.out.format("La parola %s non esiste \n", parola);
 	}
 	
 	public static void main(String[] args) {
